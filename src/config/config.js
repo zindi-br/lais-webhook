@@ -1,0 +1,24 @@
+module.exports = {
+  port: 10001,
+  ip: '206.189.235.203',
+  secret: 'zindi-jwt',
+  dev: false,
+  api_dev: 'http://localhost:2000',
+  api_ngrok: 'https://lais.ngrok.app',
+  api_prod: 'https://api.lais.app',
+  //api_prod:'http://localhost:2000',
+  urlDev: 'https://api.lais.app/api/v1',
+  urlBackend: 'https://api.lais.app/api/v1',
+  api_dev_ws: 'https://ws.zindi.com.br',
+  api_prod_ws: 'https://ws.zindi.com.br',
+  openai_credential_id: "66c54d127cae00f46db2e3ef",
+  s3_prefix_url: 'https://zindi.s3.amazonaws.com/',
+  api_dev_automacao: 'http://localhost:3043',
+  //  api_dev_automacao:'http://159.65.217.126:3043',
+  api_prod_automacao: 'http://159.65.217.126:3043',
+  api_dev_webhook: 'http://localhost:3006',
+  api_prod_webhook: 'http://143.244.158.76:3006',
+  api_dev_agentflow: 'http://localhost:8080',
+  api_prod_agentflow: 'http://143.244.158.76:8080'
+};
+
