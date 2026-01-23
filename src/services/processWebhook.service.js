@@ -237,7 +237,8 @@ async function processWebhookWhatsapp(data, session) {
 
         if (shouldLog) {
             try {
-                const phone = soNumeros(message.from || message.chatId);
+                // Usa o número do cliente (chatId ou numeroCliente do chat)
+                const phone = responseStatusChatbot?.numeroCliente || soNumeros(message.chatId);
                 const healthMessage = await ChatHealthMessages.create({
                     chat_id: responseStatusChatbot?._id || null,
                     session: session,
@@ -267,7 +268,7 @@ async function processWebhookWhatsapp(data, session) {
 
     // Verifica se é uma resposta do cliente a uma mensagem enviada fora da janela de 24h
     try {
-        const phone = soNumeros(message.from || message.chatId);
+        const phone = responseStatusChatbot?.numeroCliente || soNumeros(message.chatId);
         let pendingHealth = await getChatHealthPending(phone, clienteId);
         let healthMessageId = null;
         let createdAt = null;
