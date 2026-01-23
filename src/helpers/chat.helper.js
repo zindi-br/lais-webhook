@@ -453,7 +453,7 @@ async function atualizarAtividade(chatId, message) {
         }
 
         // validando lid
-        if(message.isLid) {
+        if(message.lid) {
             fieldsUpdate.isLid = message.isLid;
             fieldsUpdate.chatLid = message.chatLid;
             fieldsUpdate.chatNumber = message.chatNumber;

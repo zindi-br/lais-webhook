@@ -46,7 +46,6 @@ exports.home = async (req, res) => {
         }
 
         if (dataEvent.event === 'status-find') {
-            console.log('status-find', dataEvent)
             let data = {
                 to: clienteId,
                 whoTo: "clienteId",
@@ -143,7 +142,6 @@ exports.home = async (req, res) => {
                         res.status(200).json({ status: 'ok' });
                         return;
                     }
-                    console.log(data)
                     let msgTransformed = processAndTransformMessageWhatsapp(data);
                     await processWebhookWhatsapp(msgTransformed, session);
                     res.status(200).json({ status: 'ok' });

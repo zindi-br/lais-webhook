@@ -2,8 +2,6 @@ const Logs = require('../../../models/Logs');
 
 
 exports.openaiWebhook = async (req, res, next) => {
-    console.log(req.body);
-
     try {
 
         let dataLog = {
