@@ -19,6 +19,8 @@ module.exports = {
   api_dev_webhook: 'http://localhost:3006',
   api_prod_webhook: 'http://143.244.158.76:3006',
   api_dev_agentflow: 'http://localhost:8080',
-  api_prod_agentflow: 'http://143.244.158.76:8080'
+  api_prod_agentflow: 'http://143.244.158.76:8080',
+  api_dev_chatbot: 'http://localhost:3062',
+  api_prod_chatbot: 'http://143.244.158.76:3062'
 };
 
