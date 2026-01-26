@@ -254,10 +254,8 @@ async function processWebhookWhatsapp(data, session) {
                     sent_outside_24h_window: reason === 'outside_24h_window'
                 });
 
-                // Se foi enviado fora da janela de 24h, registra no Redis para monitorar resposta
-                if (reason === 'outside_24h_window') {
-                    await setChatHealthPending(phone, clienteId, healthMessage._id);
-                }
+                // Registra no Redis para monitorar resposta do cliente
+                await setChatHealthPending(phone, clienteId, healthMessage._id);
             } catch (error) {
                 console.log('Erro ao registrar chat_health_messages:', error);
             }
@@ -282,7 +280,6 @@ async function processWebhookWhatsapp(data, session) {
             const pendingFromDb = await ChatHealthMessages.findOne({
                 phone: phone,
                 cliente_id: mongoose.Types.ObjectId(clienteId),
-                sent_outside_24h_window: true,
                 client_responded: false
             }).sort({ date: -1 }).lean();
 
