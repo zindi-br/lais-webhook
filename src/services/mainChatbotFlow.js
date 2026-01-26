@@ -22,6 +22,8 @@ const mainChatbotFlow = async ({
     // altera foto de perfil
     alterarFotoPerfil(responseChat, message);
 
+    console.log('Iniciando mainChatbotFlow para o chat:', responseChat?._id || 'Novo Chat');
+
     if (!responseChat) {
         const responseChatCreated = await criarChat(
             "Geral",
