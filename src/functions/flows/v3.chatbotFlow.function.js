@@ -16,7 +16,7 @@ const messageTimeouts = new Map();
 async function processFlow(scope) {
     const { chat, message, text, channel, aiAgent, isAgentFlow } = scope;
     const chatId = message.chatId;
-    const TIMEOUT_DURATION = aiAgent?.config?.generalConfig.timeListenMsgs * 1000 || 2 * 1000;
+    const TIMEOUT_DURATION = aiAgent?.config?.generalConfig.timeListenMsgs * 1000 || 0.5 * 1000;
     let platform = channel?.platform;
 
     // Adiciona a mensagem atual ao buffer
@@ -150,7 +150,9 @@ async function v3_processChatbotFlow(scope) {
                         phone: soNumeros(message.from),
                         message: messageBreak,
                         session: channel?.config?.sessao,
-                        canal: platform
+                        canal: platform,
+                        sendTyping: false
+
                     });
                 } else {
                     const responseAudioTranscript = await processReadAudio(message, channel, aiAgent);
