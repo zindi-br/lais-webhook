@@ -107,7 +107,12 @@ const WhatsappMensagensSchema = new Schema({
   template: Object,
   url: String,
   media: Object,
-  chatPhone: String
+  chatPhone: String,
+  externalAdReply: Object,
+  errorMessage: {
+    code: Number,
+    message: String
+  }
 });
 
 module.exports = User = mongoose.model('whatsapp_mensagens', WhatsappMensagensSchema);
