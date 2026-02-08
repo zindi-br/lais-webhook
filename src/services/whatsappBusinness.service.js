@@ -6,6 +6,7 @@ const TemplateWhatsappBusiness = require('../models/TemplatesWhatsapp');
 const PricingEventsWhatsapp = require('../models/PricingEventsWhatsapp');
 const Canais = require('../models/Canais');
 const WhatsappMensagens = require('../models/WhatsappMensagens');
+const { getWhatsappErrorMessage } = require('../utils/whatsappErrorCodes.utils');
 
 /**
  * Processa o evento de atualização de categoria de template do WhatsApp Business API
@@ -271,13 +272,22 @@ const processPricingStatuses = async (statuses, metadata, session, clienteId) =>
             if (messageStatus && statusMap.hasOwnProperty(messageStatus)) {
                 const ack = statusMap[messageStatus];
 
+                const updateData = { ack: ack };
+
+                // Se a mensagem falhou, capturar o código e motivo do erro
+                if (messageStatus === 'failed' && status.errors && Array.isArray(status.errors) && status.errors.length > 0) {
+                    const errorInfo = status.errors[0];
+                    const errorCode = errorInfo.code;
+                    updateData.errorMessage = {
+                        code: errorCode,
+                        message: getWhatsappErrorMessage(errorCode)
+                    };
+                    console.log(`Mensagem ${id} falhou - Código: ${errorCode} - Motivo: ${updateData.errorMessage.message}`);
+                }
+
                 await WhatsappMensagens.updateOne(
                     { id: id },
-                    {
-                        $set: {
-                            ack: ack
-                        }
-                    }
+                    { $set: updateData }
                 );
                 console.log(`Mensagem ${id} atualizada com ack: ${ack} (${messageStatus})`);
             }
