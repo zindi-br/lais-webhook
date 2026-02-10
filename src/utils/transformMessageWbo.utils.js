@@ -2,6 +2,7 @@ const { checkMediaMessage } = require('./whatsappBuninness.utils');
 const { getTimestamp } = require('./time.utils');
 const axios = require('axios');
 const { v2_actionGetMediaWhatsappBusiness } = require('../actions/meta.action');
+const WhatsappMensagens = require('../models/WhatsappMensagens');
 
 /**
  * Gera um thumbnail em base64 a partir de uma URL de imagem
@@ -103,6 +104,23 @@ const transformMessageWbo = async (props) => {
     }
 
 
+    // Buscar mensagem citada (quoted) se existir context
+    let quotedMsg = undefined;
+    if (messageItem?.context?.id) {
+        try {
+            const quotedMessage = await WhatsappMensagens.findOne({ id: messageItem.context.id, cliente_id: clienteId }).lean();
+            if (quotedMessage) {
+                quotedMsg = {
+                    viewed: quotedMessage.viewed || false,
+                    body: quotedMessage.body,
+                    type: quotedMessage.type || "chat",
+                };
+            }
+        } catch (error) {
+            console.error('Erro ao buscar mensagem citada:', error.message);
+        }
+    }
+
     let data = {
         id: messageItem.id,
         platform: "whatsapp_business",
@@ -134,6 +152,9 @@ const transformMessageWbo = async (props) => {
             wa_id: contact?.wa_id
         },
         context: messageItem?.context,
+        quotedStanzaID: messageItem?.context?.id || undefined,
+        quotedParticipant: messageItem?.context?.from ? messageItem.context.from + "@c.us" : undefined,
+        quotedMsg: quotedMsg,
         // Informações específicas do botão (se aplicável)
         button: messageItem.type === "button" ? {
             payload: messageItem.button?.payload,
