@@ -39,7 +39,6 @@ async function checkMessageType(message, channel, chat, aiConfig) {
                 } else {
                     const responseAudioTranscript = await processReadAudio(message, channel);
                     if (responseAudioTranscript) {
-                        console.log('responseAudioTranscript', responseAudioTranscript)
                         processFlow(chat, message, responseAudioTranscript, channel);
                     } else {
                         await enviarMensagemCanal({
@@ -243,7 +242,6 @@ const webhookLaisAiFlow = async (
     }
 
     if (!responseChat?.chatbot && responseChat.statusRoom === "Avaliando") {
-        console.log('inciando avaliação')
         await handleAvaliacao(message, responseChat, clienteId, dataWebhooks, isWebhookCustom, session, responseClient, clientePaiId);
     }
 }

@@ -212,7 +212,6 @@ async function processFlow(chat, message, text, channel, aiAgent) {
 
 
                 } else if (awnserAudioConfig === "random") {
-                    console.log('responseFlow?.data', responseFlow?.data);
                     if (responseFlow?.data.isAudio) {
                         try {
                             const audio = await textToSpeech(trimmedMsg, aiAgent?.voices?.voice_id, channel.clienteId);

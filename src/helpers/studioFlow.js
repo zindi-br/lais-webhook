@@ -37,7 +37,6 @@ async function processFlow(chat, message, text, channel, flow) {
     // messageTimeouts.set(chatId, setTimeout(async () => {
     //     const allMessages = messageBufferPerChatId.get(chatId).map(msg => `${msg}`).join(' \n');
 
-    //     console.log('Inicio do processamento do flowbuilder...');
     //     const responseFlow = await flowBuilderInit(chat?._id, flow, message, allMessages, channel);
 
     //     if (responseFlow) {
@@ -96,7 +95,6 @@ async function checkMessageType(message, channel, chat, flow) {
         case isAudioMessage.includes(message.type):
             if (flow?.config?.allowsInChat.includes("audio")) {
                 const responseAudioTranscript = await processReadAudio(message, channel);
-                console.log('audio', responseAudioTranscript)
                 if (!responseAudioTranscript) {
                     await enviarMensagemCanal({
                         phone: soNumeros(message.from),
@@ -113,7 +111,6 @@ async function checkMessageType(message, channel, chat, flow) {
             }
             break;
         case isFile.includes(message.type):
-            console.log('file', message.type)
             if (flow?.config?.allowsInChat.includes("image")) {
                 // envio de arquivos
                 const responseImageTranscript = await processReadImage(
@@ -429,7 +426,6 @@ const flowBuilderInit = async (chatId, flow, message, text, channel) => {
             }
         }
     } else {
-        console.log('nao tem chat repsonse aqui')
     }
 }
 

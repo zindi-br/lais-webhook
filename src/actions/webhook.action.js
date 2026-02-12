@@ -11,7 +11,6 @@ const actionDispararCustomWebhook = (url, data) => {
 
 
 const actionResendWebhook = (data) => {
-    console.log('resend webhook')
     return axios({
         method: "POST",
         url: `${Config?.api_dev_webhook}/webhook/v1/clientes/root`,

@@ -96,22 +96,6 @@ exports.home = (req, res, next) => {
 
 
 
-
-    async function callbackWhatsapp(url, phone, message, token, session) {
-        console.log('phone:', phone, 'message:', message, 'token:', token, 'session:', session)
-        try {
-            let response = await axios.post(`${url}/${session}/send-message`, {
-                message: message,
-                phone: soNumeros(phone),
-            }, { headers: { Authorization: `Bearer ${token}` } });
-
-        } catch (error) {
-            console.log('erro ao fazer requisição apos validação');
-        }
-    }
-
-
-
     async function initBuscaBoleto() {
            console.log('iniciando busca boleto')
 

@@ -117,8 +117,6 @@ const mainChatbotFlow = async ({
             responseChat = reponse_chat_2;
         }
 
-        console.log('iniciando aqui 1', responseChat)
-
         await v3_processChatbotFlow({ chat: responseChat, message: message, channel: responseChannel });
         return;
     }
@@ -178,10 +176,8 @@ const mainChatbotFlow = async ({
                 responseChannel
             );
 
-            console.log('novo responseChat criado para fluxo do chatbot:', responseChat);
          
         }
-                console.log('iniciando aqui 2')
 
         await v3_processChatbotFlow({ chat: responseChat, message: message, channel: responseChannel });
         return;

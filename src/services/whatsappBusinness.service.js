@@ -182,8 +182,6 @@ const processTemplateStatusUpdate = async (webhookData, session, clienteId) => {
                 });
             } else {
                 // alterar o status do template no banco de dados
-                console.log('templateId', templateId, 'tipo:', typeof templateId);
-                console.log('event', event);
                 await TemplateWhatsappBusiness.updateOne({
                     templateId: templateId
                 }, {
@@ -266,7 +264,6 @@ const processPricingStatuses = async (statuses, metadata, session, clienteId) =>
         // Processar cada status
         for (const status of statuses) {
             const { pricing, timestamp, id, status: messageStatus } = status;
-            console.log('status:', status);
 
             // Atualizar status da mensagem no banco de dados
             if (messageStatus && statusMap.hasOwnProperty(messageStatus)) {
@@ -373,7 +370,6 @@ const processWboWebhook = async (webhookData, session, clienteId) => {
                     // Processar mensagens (já existe lógica para isso)
                     // Verificar se existem mensagens e contatos
                     if (!change.value.messages || !Array.isArray(change.value.messages) || change.value.messages.length === 0) {
-                        console.log('Nenhuma mensagem encontrada no webhook');
                         break;
                     }
 

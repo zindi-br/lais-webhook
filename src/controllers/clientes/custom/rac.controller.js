@@ -102,7 +102,6 @@ exports.home = (req, res, next) => {
 
 
         if (payload.response_df.intent.displayName === "001 - fallback" || payload.response_df.intent.displayName === "001 - fallback - fallback" || payload.response_df.intent.displayName === "001") {
-            console.log('payload.response_df.intent.displayName', payload.response_df.intent.displayName)
             if (payload.response_df.queryText.length === 11) {
 
                 let buscaBoleto = await buscarBoletoPorCpf(payload.response_df.queryText);

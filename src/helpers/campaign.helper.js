@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 
 
 async function initCampaingn(clienteId, number, message, chatId) {
-    console.log('initCampaingn', clienteId, number, message, chatId)
 
     const campaingnsActives = await Campaigns.find({
         status: true,

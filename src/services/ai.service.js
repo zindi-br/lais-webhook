@@ -39,8 +39,6 @@ const verifyLeadAndSaveCrmLead = async (props) => {
          })
          .sort({data_modificacao: -1});
 
-         console.log('leads', leads);
-
          if(!leads) {
             // criando crm lead e atualizando aiOrderLead
             let dataCrmLead = {

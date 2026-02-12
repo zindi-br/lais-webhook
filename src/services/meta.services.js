@@ -28,7 +28,6 @@ const getInfoInstagramUserAndUpdate = async (instagramUserId, sessao, chat) => {
     try {
         let querys = `?sessao=${sessao}&canal=instagram`
         const response = await v2_actionGetInfoUserInstagram(instagramUserId, querys);
-        console.log('responseInfoPerfil', response.data.data)
         if(response.status === 200 && response.data){
             const dataInsert = response.data.data;
             updateInfoUser(dataInsert)
