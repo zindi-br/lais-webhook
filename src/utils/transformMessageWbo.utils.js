@@ -11,8 +11,7 @@ const WhatsappMensagens = require('../models/WhatsappMensagens');
  */
 const generateImageThumbnail = async (imageUrl) => {
     try {
-        console.log('Gerando thumbnail para:', imageUrl);
-        
+       
         // Baixar a imagem
         const response = await axios.get(imageUrl, {
             responseType: 'arraybuffer',
@@ -26,7 +25,6 @@ const generateImageThumbnail = async (imageUrl) => {
         // Converter para base64
         const base64Image = Buffer.from(response.data).toString('base64');
         
-        console.log('Thumbnail gerado com sucesso');
         return base64Image;
         
     } catch (error) {
@@ -86,9 +84,7 @@ const transformMessageWbo = async (props) => {
         mimetype = messageItem.image?.mime_type;
         sha256 = messageItem.image?.sha256;
         mediaId = messageItem.image?.id;
-        console.log('body  2', body);
         body = await generateImageThumbnail(url);
-        console.log('body  3', body);
     } else if (messageItem.type === "video") {
         mimetype = messageItem.video?.mime_type;
         url = messageItem.video?.url;

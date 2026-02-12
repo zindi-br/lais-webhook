@@ -3,6 +3,7 @@ const { sendEventWebhook } = require('../helpers/webhook.helper');
 const { transformMessageWbo } = require('../utils/transformMessageWbo.utils');
 const { processWebhookWhatsapp } = require('./processWebhook.service');
 const TemplateWhatsappBusiness = require('../models/TemplatesWhatsapp');
+const TemplatesWhatsappCategoryLogs = require('../models/TemplatesWhatsappCategoryLogs');
 const PricingEventsWhatsapp = require('../models/PricingEventsWhatsapp');
 const Canais = require('../models/Canais');
 const WhatsappMensagens = require('../models/WhatsappMensagens');
@@ -68,18 +69,31 @@ const processTemplateCategoryUpdate = async (webhookData, session, clienteId) =>
             timestamp: new Date().toISOString()
         });
 
-        // Aqui você pode adicionar lógica adicional como:
-        // - Atualizar banco de dados com nova categoria
-        // - Notificar administradores
-        // - Enviar webhook para sistemas externos
-        // - Validar se a categoria está correta
+        // Buscar template antes de atualizar para obter _id e canalId
+        const templateLocal = await TemplateWhatsappBusiness.findOne({
+            templateId: message_template_id
+        });
 
-        // atualizar o status do template no banco de dados
+        // Atualizar o status do template no banco de dados
         await TemplateWhatsappBusiness.updateOne({
             templateId: message_template_id
         }, {
             category: new_category
         });
+
+        // Registrar log de alteração de categoria
+        if (templateLocal) {
+            await TemplatesWhatsappCategoryLogs.create({
+                templateId: templateLocal._id,
+                metaTemplateId: message_template_id,
+                templateName: message_template_name,
+                categoryAnterior: previous_category,
+                categoryNova: new_category,
+                canalId: templateLocal.canalId,
+                cliente_id: clienteId
+            });
+            console.log(`📝 Log de alteração de categoria registrado para template ${message_template_name}`);
+        }
 
         console.log(`Template ${message_template_name} (ID: ${message_template_id}) teve categoria alterada de ${previous_category} para ${new_category}`);
 
@@ -182,8 +196,6 @@ const processTemplateStatusUpdate = async (webhookData, session, clienteId) => {
                 });
             } else {
                 // alterar o status do template no banco de dados
-                console.log('templateId', templateId, 'tipo:', typeof templateId);
-                console.log('event', event);
                 await TemplateWhatsappBusiness.updateOne({
                     templateId: templateId
                 }, {
@@ -266,7 +278,6 @@ const processPricingStatuses = async (statuses, metadata, session, clienteId) =>
         // Processar cada status
         for (const status of statuses) {
             const { pricing, timestamp, id, status: messageStatus } = status;
-            console.log('status:', status);
 
             // Atualizar status da mensagem no banco de dados
             if (messageStatus && statusMap.hasOwnProperty(messageStatus)) {
@@ -373,7 +384,6 @@ const processWboWebhook = async (webhookData, session, clienteId) => {
                     // Processar mensagens (já existe lógica para isso)
                     // Verificar se existem mensagens e contatos
                     if (!change.value.messages || !Array.isArray(change.value.messages) || change.value.messages.length === 0) {
-                        console.log('Nenhuma mensagem encontrada no webhook');
                         break;
                     }
 

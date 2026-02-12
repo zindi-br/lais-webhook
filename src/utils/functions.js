@@ -59,13 +59,9 @@ async function executeQueries(projectId, sessionId, queries, languageCode, priva
 
     for (const query of queries) {
         try {
-            //console.log(`Sending Query: ${query}`);
             if (query == null) {
-                console.log('deu ruim');
             } else {
                 intentResponse = await detectIntent(projectId, sessionId, query, context, languageCode, privateKey, clientEmail);
-                //console.log('data:', intentResponse)
-                // console.log('displayName', intentResponse.queryResult.intent.displayName)
                 return intentResponse.queryResult;
             }
             // return `${intentResponse.queryResult.fulfillmentText}`;

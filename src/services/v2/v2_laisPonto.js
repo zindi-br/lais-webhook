@@ -23,7 +23,6 @@ const addRegistry = async (colaboradorId, ultimoRegistro, radius) => {
       "lng":radius.lng
     }
   }
-  console.log('data', data);
  const response = await LaisPontoRegistros(data).save();
  // add history 
 
@@ -85,7 +84,6 @@ async function addRegistroPonto(message) {
     });
     return;
   }
-  console.log(message?.loc?.length)
 
   if(message?.loc?.length > 1) {
     await enviarMensagemCanal({

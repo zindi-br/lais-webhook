@@ -266,7 +266,6 @@ const callChatbotFlow = async ({ chat, channel, message }) => {
                     }
                 }
                 const responseContinueFlow = await actionStartChatbot(chatFlowId, data);
-                console.log('responseContinueFlow 0', responseContinueFlow?.data)
                 return responseContinueFlow?.data
             } catch (error) {
                 console.log('erro ao iniciar o flow', error)
@@ -286,7 +285,6 @@ const callChatbotFlow = async ({ chat, channel, message }) => {
                     }
                 }
                 const responseStartFlow = await actionStartChatbot(chatFlowId, data);
-                console.log('responseStartFlow', responseStartFlow?.data) 
                 if (responseStartFlow.status === 200) {
                     await Chats.updateOne({ _id: chat._id }, { sessionFlowId: responseStartFlow.data.sessionId });
                     return responseStartFlow?.data

@@ -57,7 +57,6 @@ exports.webHookMetaPush = async (req, res, next) => {
 
 exports.webhookMetaVerificacao = (req, res, next) => {
     let queryValue = req.query
-    console.log('queryValue', queryValue)
     res.status(200).send(queryValue['hub.challenge']);
 };
 
@@ -128,7 +127,6 @@ exports.auth = async (req, res, next) => {
             }
         });
         const accessTokenUser = response.data.access_token;
-        console.log('accessTokenUser', accessTokenUser)
         updateChannel(accessTokenUser);
 
         //res.redirect('https://beta.lais.app/dashboard/configuracoes/canais');

@@ -33,7 +33,6 @@ async function processFlow(scope) {
     messageTimeouts.set(chatId, setTimeout(async () => {
         // Obtém todas as mensagens no buffer para esse chatId e as concatena com o prefixo adequado
         const allMessages = messageBufferPerChatId.get(chatId).map(msg => `${msg}`).join(' \n');
-        console.log('allMessages', allMessages);
         let data = {
             "provider": aiAgent?.config?.generalConfig.provider,
             "scope": {
@@ -143,7 +142,6 @@ async function processFlow(scope) {
             return;
         }
     }, TIMEOUT_DURATION));
-    console.log('Aguardando novas mensagens...', TIMEOUT_DURATION, 'segundos');
 }
 
 
