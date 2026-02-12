@@ -22,8 +22,6 @@ const mainChatbotFlow = async ({
     // altera foto de perfil
     alterarFotoPerfil(responseChat, message);
 
-    console.log('Iniciando mainChatbotFlow para o chat:', responseChat?._id || 'Novo Chat');
-
     if (!responseChat) {
         const responseChatCreated = await criarChat(
             "Geral",
@@ -116,7 +114,10 @@ const mainChatbotFlow = async ({
                     fromMe: false
                 });
             }
+            responseChat = reponse_chat_2;
         }
+
+        console.log('iniciando aqui 1', responseChat)
 
         await v3_processChatbotFlow({ chat: responseChat, message: message, channel: responseChannel });
         return;
@@ -157,7 +158,7 @@ const mainChatbotFlow = async ({
             })
             return;
         } else {
-            await criarChat(
+              responseChat = await criarChat(
                 "Geral",
                 true,
                 soNumeros(message.from),
@@ -175,8 +176,13 @@ const mainChatbotFlow = async ({
                 },
                 findFirstMessage,
                 responseChannel
-            )
+            );
+
+            console.log('novo responseChat criado para fluxo do chatbot:', responseChat);
+         
         }
+                console.log('iniciando aqui 2')
+
         await v3_processChatbotFlow({ chat: responseChat, message: message, channel: responseChannel });
         return;
     }
