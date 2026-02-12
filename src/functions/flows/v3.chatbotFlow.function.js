@@ -38,7 +38,8 @@ async function processFlow(scope) {
 
         try {
             let responseFlow = await callChatbotFlow({ chat, channel, message });
-            const messages = responseFlow?.text;
+            const rawMessages = responseFlow?.text;
+            const messages = Array.isArray(rawMessages) ? rawMessages : rawMessages ? [rawMessages] : [];
             // Limpa o buffer e remove o timeout deste chatId após o processamento
             messageBufferPerChatId.delete(chatId);
             messageTimeouts.delete(chatId);
@@ -255,9 +256,17 @@ const callChatbotFlow = async ({ chat, channel, message }) => {
                 let data = {
                     sessionId: sessionFlowId,
                     question: message.body,
-                    splitMessage: true
+                    splitMessage: true,
+                    vars: {
+                        chatId: chat._id,
+                        numero: chat?.numeroCliente,
+                        nome: chat?.nomeCliente,
+                        chatClientId: chat?.cliente_id,
+                        cliente_id: chat?.cliente_id
+                    }
                 }
                 const responseContinueFlow = await actionStartChatbot(chatFlowId, data);
+                console.log('responseContinueFlow 0', responseContinueFlow?.data)
                 return responseContinueFlow?.data
             } catch (error) {
                 console.log('erro ao iniciar o flow', error)
@@ -267,9 +276,17 @@ const callChatbotFlow = async ({ chat, channel, message }) => {
             try {
                 let data = {
                     question: message.body,
-                    splitMessage: true
+                    splitMessage: true,
+                    vars: {
+                        chatId: chat._id,
+                        numero: chat?.numeroCliente,
+                        nome: chat?.nomeCliente,
+                        chatClientId: chat?.cliente_id,
+                        cliente_id: chat?.cliente_id
+                    }
                 }
                 const responseStartFlow = await actionStartChatbot(chatFlowId, data);
+                console.log('responseStartFlow', responseStartFlow?.data) 
                 if (responseStartFlow.status === 200) {
                     await Chats.updateOne({ _id: chat._id }, { sessionFlowId: responseStartFlow.data.sessionId });
                     return responseStartFlow?.data
